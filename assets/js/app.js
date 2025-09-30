@@ -184,7 +184,11 @@
 
   async function loadProducts(){
     try{
-      const res = await fetch('data/products.json');
+      const dataUrl = new URL('data/products.json', window.location.href).toString();
+      const res = await fetch(dataUrl, { headers: { 'Accept':'application/json' } });
+      if(!res.ok){
+        throw new Error(`HTTP ${res.status} ${res.statusText}`);
+      }
       const data = await res.json();
       state.products = data.products;
       state.filtered = [...state.products];
@@ -192,7 +196,9 @@
       applyFilters();
     }catch(err){
       console.error('Failed to load products', err);
-      $('#productGrid').innerHTML = '<p>Unable to load products right now. Please refresh.</p>'
+      const msg = `Unable to load products. ${err?.message || ''}`;
+      const grid = document.getElementById('productGrid');
+      if(grid){ grid.innerHTML = `<p>${msg}</p>`; }
     }
   }
 

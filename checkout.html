@@ -4,7 +4,49 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Checkout | Sweethouse</title>
-  <link href="assets/css/styles.css" rel="stylesheet" />
+  <style>
+  :root{--bg:#0f0f12;--bg-soft:#15161a;--card:#1b1d23;--text:#eaeaf0;--muted:#a7a8ae;--brand:#6f3cc3;--brand-2:#b86ef3;--accent:#8a63d2;--shadow:0 10px 30px rgba(0,0,0,.35);--gradient:linear-gradient(135deg,var(--brand),var(--brand-2));--ring:0 0 0 1px #2b2e37 inset}
+  :root.light{--bg:#fff;--bg-soft:#f7f7fa;--card:#fff;--text:#18181b;--muted:#4b4e57;--brand:#6f3cc3;--brand-2:#b86ef3;--accent:#6f3cc3;--shadow:0 10px 24px rgba(0,0,0,.08);--ring:0 0 0 1px #ececf2 inset}
+  *{box-sizing:border-box}html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+  .container{width:min(1200px,92%);margin-inline:auto}
+  .site-header{position:sticky;top:0;background:rgba(15,15,18,.6);backdrop-filter:saturate(180%) blur(14px);border-bottom:1px solid rgba(255,255,255,.08);z-index:50}
+  .header-wrap{display:flex;align-items:center;justify-content:space-between;padding:1rem 0}
+  .brand{display:flex;align-items:center;gap:.7rem;font-weight:800;font-family:'Playfair Display',serif;font-size:1.2rem}
+  .brand .logo{width:34px;height:34px}
+  .main-nav{display:flex;gap:1rem}
+  .main-nav a{padding:.6rem .8rem;border-radius:10px}
+  .main-nav a:hover{background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(0,0,0,.05))}
+  .section{padding:3rem 0}
+  .btn{display:inline-flex;align-items:center;gap:.6rem;padding:.95rem 1.25rem;border-radius:14px;border:1px solid transparent;font-weight:700;letter-spacing:.2px;transition:.25s;position:relative}
+  .btn-primary{background:linear-gradient(135deg,var(--brand),var(--brand-2));color:#fff;box-shadow:0 10px 26px rgba(111,60,195,.28),0 4px 10px rgba(184,110,243,.22)}
+  .btn-outline{background:linear-gradient(var(--card),var(--card)) padding-box, linear-gradient(135deg,#4b2f83,#7b4cc2) border-box;border:1px solid rgba(255,255,255,.08);color:var(--text)}
+  input{background:#ffffff;border:1px solid #e7e7ec;color:#18181b;padding:.8rem 1rem;border-radius:12px;outline:none}
+  input:focus{border-color:#a885f0;box-shadow:0 0 0 3px rgba(111,60,195,.22)}
+  .cart-item{display:grid;grid-template-columns:64px 1fr auto;gap:.8rem;align-items:center;background:var(--bg-soft);border:1px solid #2c2f39;border-radius:12px;padding:.6rem}
+  .row{display:flex;justify-content:space-between}
+  .muted{color:var(--muted)}
+  .cart-item img{width:64px;height:64px;object-fit:cover;border-radius:10px}
+  .line-title{font-weight:700}
+  /* Shared purple hero + accents */
+  .hero-min{padding:3.5rem 0 2rem}
+  .page-hero{background:var(--gradient);color:#fff;border-radius:18px;padding:1.6rem 1.4rem;box-shadow:0 16px 32px rgba(111,60,195,.25)}
+  .page-hero .title{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,4vw,2.4rem);margin:0}
+  .page-hero .sub{opacity:.92;margin:.4rem 0 0}
+  .section-title{font-family:'Playfair Display',serif;margin:.2rem 0 1rem}
+  .section-title .u{display:inline-block;background:linear-gradient(90deg,rgba(184,110,243,.35),transparent);padding:.15rem .35rem;border-radius:8px}
+  .card{background:linear-gradient(180deg,rgba(255,255,255,.02),rgba(255,255,255,0)),var(--card);border:1px solid rgba(255,255,255,.08);border-radius:16px;box-shadow:0 6px 22px rgba(0,0,0,.22)}
+  .card.pad{padding:1.2rem}
+  :root.light .card{background:#fff;border-color:#eee;box-shadow:0 8px 18px rgba(0,0,0,.06)}
+  /* WA widget styles to keep panel hidden and icons sized */
+  .wa-fab{position:fixed;right:18px;bottom:18px;width:56px;height:56px;border-radius:50%;border:none;cursor:pointer;font-size:22px;display:flex;align-items:center;justify-content:center;background:var(--gradient);color:#fff;box-shadow:0 10px 24px rgba(0,0,0,.22);z-index:80}
+  .wa-fab .icon{width:24px;height:24px}
+  .wa-panel{position:fixed;right:18px;bottom:88px;width:min(380px,92vw);background:var(--card);border:1px solid rgba(255,255,255,.08);border-radius:16px;box-shadow:var(--shadow);overflow:hidden;transform:translateY(10px);opacity:0;pointer-events:none;transition:.2s;z-index:80}
+  .wa-panel.open{transform:none;opacity:1;pointer-events:auto}
+  .wa-panel-head{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;padding:1rem;background:linear-gradient(135deg,var(--brand),var(--brand-2));color:#fff}
+  .wa-icons{display:flex;gap:.6rem;padding:.8rem 1rem;border-bottom:1px solid rgba(255,255,255,.08)}
+  .wa-icons a .icon{width:20px;height:20px;display:inline-block}
+  .icon{width:20px;height:20px}
+  </style>
 </head>
 <body>
   <header class="site-header">
@@ -16,44 +58,57 @@
     </div>
   </header>
 
-  <main class="container section" style="max-width:860px">
-    <h1>Checkout</h1>
-    <p class="muted">Review your order and complete your purchase.</p>
-
-    <div id="orderSummary" class="section" style="padding-top:1rem"></div>
-
-    <form id="checkoutForm" class="section" style="padding-top:0">
-      <h2>Shipping Details</h2>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
-        <input required name="name" placeholder="Full Name" />
-        <input required name="phone" placeholder="Phone Number" />
-        <input required name="email" placeholder="Email" />
-        <input required name="pincode" placeholder="Pincode" />
-        <input required name="address" placeholder="Address Line" style="grid-column:1/-1" />
-        <input name="note" placeholder="Order Note (optional)" style="grid-column:1/-1" />
+  <main class="section hero-min">
+    <div class="container" style="max-width:980px">
+      <div class="page-hero">
+        <h1 class="title">Checkout</h1>
+        <p class="sub">Review your order and complete your purchase.</p>
       </div>
-      <div style="display:flex;gap:.6rem;margin-top:1rem">
-        <button class="btn btn-outline" type="button" id="emailOrder">Email Order</button>
+
+      <div id="orderSummary" class="card pad" style="margin-top:1.2rem">
+        <h2 class="section-title"><span class="u">Order Summary</span></h2>
       </div>
-    </form>
+
+      <form id="checkoutForm" class="card pad" style="margin-top:1.2rem">
+        <h2 class="section-title"><span class="u">Shipping Details</span></h2>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+          <input required name="name" placeholder="Full Name" />
+          <input required name="phone" placeholder="Phone Number" />
+          <input required name="email" placeholder="Email" />
+          <input required name="pincode" placeholder="Pincode" />
+          <input required name="address" placeholder="Address Line" style="grid-column:1/-1" />
+          <input name="note" placeholder="Order Note (optional)" style="grid-column:1/-1" />
+        </div>
+        <div style="display:flex;gap:.6rem;margin-top:1rem">
+          <button class="btn btn-outline" type="button" id="emailOrder">Email Order</button>
+        </div>
+      </form>
+    </div>
   </main>
+
+    <style>
+      .cart-item img{width:100%;height:100%;object-fit:cover;border-radius:10px}
+    </style>
 
     <script>
       const fmt = new Intl.NumberFormat('en-IN',{style:'currency',currency:'INR',maximumFractionDigits:0});
       const cart = JSON.parse(localStorage.getItem('sweethouse_cart')||'[]');
       function render(){
         const wrap = document.getElementById('orderSummary');
-        if(!cart.length){wrap.innerHTML='<p>Your cart is empty. <a href="index.html#products">Continue shopping</a>.</p>';return}
+        if(!cart.length){
+          wrap.innerHTML = '<h2 class="section-title"><span class="u">Order Summary</span></h2><p>Your cart is empty. <a href="index.html#products">Continue shopping</a>.</p>';
+          return;
+        }
         const subtotal = cart.reduce((s,i)=>s+i.price*i.qty,0);
         const totalWeightG = cart.reduce((s,i)=>s + i.qty*200,0);
         wrap.innerHTML = `
-          <h2>Order Summary</h2>
+          <h2 class="section-title"><span class="u">Order Summary</span></h2>
           ${cart.map(i=>`<div class="cart-item"><img src="${i.image}" alt=""><div><div class="line-title">${i.title}</div><div class="muted">${fmt.format(i.price)} per 200g pack • Qty: ${i.qty} pack(s) • ${i.qty*200}g</div></div><div><strong>${fmt.format(i.price*i.qty)}</strong></div></div>`).join('')}
           <div class="cart-footer" style="margin-top:1rem">
             <div class="row"><span>Subtotal</span><strong>${fmt.format(subtotal)}</strong></div>
             <div class="row"><span>Total Weight</span><span>${totalWeightG}g</span></div>
             <div class="row"><span>Shipping</span><span>Calculated after address</span></div>
-          </div>`
+          </div>`;
       }
       function buildOrderMessage(data){
         const lines = cart.map(i=>`• ${i.title} — ${i.qty} pack(s) (${i.qty*200}g) = ${fmt.format(i.price*i.qty)}`).join('%0A');
